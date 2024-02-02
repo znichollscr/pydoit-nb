@@ -1,0 +1,17 @@
+import numpy as np
+import numpy.typing as nptype
+
+from pydoit_nb.serialization import structure_np_array
+
+
+# id: structure-to-float64
+# exp: "numpy.ndarray[Any, numpy.dtype[numpy.floating[numpy._typing._64Bit]]]"
+reveal_type(structure_np_array([1, 3], nptype.NDArray[np.float64]))
+
+# id: structure-to-float32
+# exp: "numpy.ndarray[Any, numpy.dtype[numpy.floating[numpy._typing._32Bit]]]"
+reveal_type(structure_np_array([1, 3], nptype.NDArray[np.float32]))
+
+# id: structure-to-int32
+# exp: "numpy.ndarray[Any, numpy.dtype[numpy.signedinteger[numpy._typing._32Bit]]]"
+reveal_type(structure_np_array([1, 3], nptype.NDArray[np.int32]))

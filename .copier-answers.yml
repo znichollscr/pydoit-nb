@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.5.1
+_src_path: ../copier-core-python-repository
+email: zebedee.nicholls@climate-resource.com
+initial_setup: true
+name: Zebedee Nicholls
+notebook_dependencies: true
+pandas_doctests: false
+plot_dependencies: false
+project_description_short: Library to support combining jupyter notebooks and pydoit.
+project_name_human: pydoit-nb
+project_name_pip: pydoit-nb
+project_name_python: pydoit_nb
+project_url: https://github.com/climate-resource/pydoit-nb
