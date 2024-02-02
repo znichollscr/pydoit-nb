@@ -56,13 +56,13 @@ The steps required are the following:
 
 
 1. Bump the version: manually trigger the "bump" workflow from the main branch
-   (see here: https://github.com/climate-resource/pydoit-nb/actions/workflows/bump.yaml).
-   A valid "bump_rule" (see https://python-poetry.org/docs/cli/#version) will need to be specified.
+   (see here: [bump workflow](https://github.com/climate-resource/pydoit-nb/actions/workflows/bump.yaml)).
+   A valid "bump_rule" (see [poetry's docs](https://python-poetry.org/docs/cli/#version)) will need to be specified.
    This will then trigger a draft release.
 
 1. Edit the draft release which has been created
    (see here:
-   https://github.com/climate-resource/pydoit-nb/releases).
+   [project releases](https://github.com/climate-resource/pydoit-nb/releases)).
    Once you are happy with the release (removed placeholders, added key
    announcements etc.) then hit 'Publish release'. This triggers a release to
    PyPI (which you can then add to the release if you want).
