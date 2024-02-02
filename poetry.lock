@@ -3889,4 +3889,4 @@ notebooks = ["notebook"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "8a027bb2efe88089391bd6198217565c87ad4278c8d629d28b3242c9f1fcab8c"
+content-hash = "e3a538dc7c4c354e28f1db35d32893230c0189bc8ef3d1854e7f7420e130f0fe"
