@@ -6,7 +6,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol, TypeVar
 
-from typing_extensions import TypeAlias
+try:
+    from typing_extensions import TypeAlias
+except ImportError:  # >= python 3.11
+    # remove type ignore when mypy applied with python 3.11
+    from typing import TypeAlias  # type: ignore
 
 T_co = TypeVar("T_co", covariant=True)
 T_contra = TypeVar("T_contra", contravariant=True)

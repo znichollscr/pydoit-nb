@@ -47,7 +47,7 @@ def insert_path_prefix(config: AttrsInstance, prefix: Path) -> AttrsInstance:
                 update_attr_value(k, prefix): update_attr_value(v, prefix) for k, v in attr_value.items()
             }
 
-        elif not isinstance(attr_value, str | np.ndarray) and isinstance(attr_value, Iterable):
+        elif not isinstance(attr_value, (str, np.ndarray)) and isinstance(attr_value, Iterable):
             evolutions[attr_name] = [update_attr_value(v, prefix) for v in attr_value]
 
         else:

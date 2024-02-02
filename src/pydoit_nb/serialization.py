@@ -33,13 +33,19 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, TypeAlias, TypeVar, cast
+from typing import Any, TypeVar, Union, cast
 
 import cattrs.preconf.pyyaml
 import numpy as np
 import numpy.typing as nptype
 
 from .typing import ConfigBundleLike, Converter
+
+try:
+    from typing_extensions import TypeAlias
+except ImportError:  # >= python 3.11
+    # remove type ignore when mypy applied with python 3.11
+    from typing import TypeAlias  # type: ignore
 
 try:
     import pint
@@ -50,7 +56,7 @@ except ImportError:  # pragma: no cover
 
 T = TypeVar("T")
 U = TypeVar("U")
-N = TypeVar("N", bound=nptype.NDArray[np.floating[Any] | np.integer[Any]])
+N = TypeVar("N", bound=nptype.NDArray[Union[np.floating[Any], np.integer[Any]]])
 
 
 def write_config_in_config_bundle_to_disk(
@@ -111,7 +117,7 @@ def load_config_from_file(config_file: Path, target: type[T], converter: Convert
 converter_yaml = cattrs.preconf.pyyaml.make_converter()
 
 
-UnstructuredArray: TypeAlias = Sequence[int | float] | Sequence["UnstructuredArray"]
+UnstructuredArray: TypeAlias = Union[Sequence[Union[int, float]], Sequence["UnstructuredArray"]]
 
 
 def unstructure_np_array(arr: nptype.NDArray[np.float64]) -> UnstructuredArray:
@@ -219,7 +225,7 @@ converter_yaml.register_unstructure_hook_func(_is_np_scalar, unstructure_np_scal
 converter_yaml.register_structure_hook_func(_is_np_scalar, structure_np_scalar)
 
 if HAS_PINT:
-    UnstructuredPint: TypeAlias = tuple[int | float, str] | tuple[UnstructuredArray, str]
+    UnstructuredPint: TypeAlias = Union[tuple[Union[int, float], str], tuple[UnstructuredArray, str]]
 
     def unstructure_pint(inp: pint.UnitRegistry.Quantity) -> UnstructuredPint:
         """

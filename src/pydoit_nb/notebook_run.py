@@ -26,7 +26,7 @@ class NotebookExecutionException(Exception):
     def __init__(self, exc: Exception, filename: Path):
         note = f"{filename} failed to execute. Original exception: {exc}"
         if sys.version_info[1] >= _PYTHON_ADD_NOTE_INTRODUCED:
-            self.add_note(note)
+            self.add_note(note)  # type: ignore # can be removed once we apply mypy with Python 3.11
 
         super().__init__(exc)
 

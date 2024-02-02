@@ -3,12 +3,15 @@ Test notebook_run module
 """
 import logging
 import re
+import sys
 from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
 
 from pydoit_nb.notebook_run import NotebookExecutionException, run_notebook
+
+_PYTHON_ADD_NOTE_INTRODUCED: int = 11
 
 
 @pytest.mark.parametrize(
@@ -91,9 +94,10 @@ def test_run_notebook_error(tmp_path):
             notebook_executor=notebook_executor,
         )
 
-    assert exc.value.__notes__ == [
-        f"{unexecuted_notebook} failed to execute. Original exception: {original_exc}"
-    ]
+    if sys.version_info[1] >= _PYTHON_ADD_NOTE_INTRODUCED:
+        assert exc.value.__notes__ == [
+            f"{unexecuted_notebook} failed to execute. Original exception: {original_exc}"
+        ]
 
 
 # integration test too to make sure defaults work (in different folder)
