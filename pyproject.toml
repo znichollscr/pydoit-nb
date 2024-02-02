@@ -9,12 +9,20 @@ packages = [{include = "pydoit_nb", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 notebook = { version = "^6.5.3", optional = true }
+doit = "^0.36.0"
+jupytext = "^1.16.1"
+papermill = "^2.5.0"
+numpy = { version = "^1.26.3", optional = true }
+cattrs = "^23.2.3"
 
 [tool.poetry.extras]
+extras = ["numpy"]
 notebooks = ["notebook"]
 
 [tool.poetry.group.tests.dependencies]
 pytest = "^7.3.1"
+pandas = "^2.2.0"
+pint = "^0.23"
 
 [tool.poetry.group.docs.dependencies]
 myst-nb = "^0.17.0"
@@ -40,6 +48,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.coverage.run]
 source = ["src"]
 branch = true
+omit = ["*/pydoit_nb/typing.py"]
 
 [tool.coverage.report]
 fail_under = 95
@@ -62,6 +71,8 @@ show_error_context = true
 warn_unreachable = true
 # importing following uses default settings
 follow_imports = "normal"
+# TODO: add this to the copier template
+plugins = "numpy.typing.mypy_plugin"
 
 [tool.jupytext]
 formats = "ipynb,py:percent"
@@ -97,7 +108,8 @@ ignore = [
     "D200",  # One-line docstring should fit on one line with quotes
     "D400",  # First line should end with a period
 ]
-line-length = 88
+# Provide some leeway for long docstring
+line-length = 110
 
 [tool.ruff.format]
 docstring-code-format = true
