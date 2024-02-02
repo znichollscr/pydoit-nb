@@ -4,6 +4,7 @@ Notebook running
 from __future__ import annotations
 
 import logging
+import sys
 from pathlib import Path
 from typing import Any, Callable
 
@@ -13,6 +14,10 @@ import papermill
 logger = logging.getLogger(__name__)
 
 
+_PYTHON_ADD_NOTE_INTRODUCED: int = 11
+"""Python3 minor version in which add_note was introduced"""
+
+
 class NotebookExecutionException(Exception):
     """
     Raised when a notebook fails to execute for any reason
@@ -20,7 +25,9 @@ class NotebookExecutionException(Exception):
 
     def __init__(self, exc: Exception, filename: Path):
         note = f"{filename} failed to execute. Original exception: {exc}"
-        self.add_note(note)
+        if sys.version_info[1] >= _PYTHON_ADD_NOTE_INTRODUCED:
+            self.add_note(note)
+
         super().__init__(exc)
 
 
