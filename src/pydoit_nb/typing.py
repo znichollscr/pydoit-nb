@@ -4,7 +4,9 @@ Typing specifications
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Protocol, TypeAlias, TypeVar
+from typing import Any, Protocol, TypeVar
+
+from typing_extensions import TypeAlias
 
 T_co = TypeVar("T_co", covariant=True)
 T_contra = TypeVar("T_contra", contravariant=True)
