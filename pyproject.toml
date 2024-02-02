@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydoit-nb"
-version = "0.1.0"
+version = "0.1.1a0"
 description = "Library to support combining jupyter notebooks and pydoit."
 authors = ["Zebedee Nicholls <zebedee.nicholls@climate-resource.com>"]
 readme = "README.md"
