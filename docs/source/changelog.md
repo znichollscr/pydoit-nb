@@ -18,3 +18,8 @@ of rst and use slightly different categories.
 -->
 
 <!-- towncrier release notes start -->
+
+## pydoit-nb v0.2.0 (2024-02-02)
+
+
+No significant changes.
