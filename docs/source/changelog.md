@@ -19,6 +19,14 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## pydoit-nb v0.2.1 (2024-02-03)
+
+
+### Trivial/Internal Changes
+
+- [#2](https://github.com/climate-resource/pydoit-nb/pulls/2)
+
+
 ## pydoit-nb v0.2.0 (2024-02-02)
 
 
