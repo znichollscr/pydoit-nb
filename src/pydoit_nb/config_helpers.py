@@ -30,11 +30,11 @@ def assert_path_exists(inp: Path) -> None:
 
     Raises
     ------
-    AssertionError
+    FileNotFoundError
         ``inp`` does not exist
     """
     if not inp.exists():
-        raise AssertionError(f"{inp} does not exist")  # noqa: TRY003
+        raise FileNotFoundError(f"{inp} does not exist")  # noqa: TRY003
 
 
 @make_attrs_validator_compatible_single_input

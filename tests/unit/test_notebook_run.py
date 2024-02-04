@@ -32,7 +32,7 @@ _PYTHON_ADD_NOTE_INTRODUCED: int = 11
 def test_run_notebook(notebook_parameters, notebook_parameters_exp, executed_notebook, tmp_path, caplog):
     caplog.set_level(logging.INFO)
 
-    raw_notebook = Path("/Path") / "to" / "base_notebook"
+    raw_notebook = Path("/Path") / "to" / "raw_notebook"
     unexecuted_notebook = Path("/TO") / "unexecuted" / "notebook.ipynb"
     executed_notebook = tmp_path / executed_notebook
     check_executed_notebook_dir_created = not executed_notebook.parent.exists()
@@ -76,7 +76,7 @@ def test_run_notebook(notebook_parameters, notebook_parameters_exp, executed_not
 
 
 def test_run_notebook_error(tmp_path):
-    raw_notebook = Path("/Path") / "to" / "base_notebook"
+    raw_notebook = Path("/Path") / "to" / "raw_notebook"
     unexecuted_notebook = Path("/TO") / "unexecuted" / "notebook.ipynb"
     executed_notebook = tmp_path / "executed.ipynb"
 

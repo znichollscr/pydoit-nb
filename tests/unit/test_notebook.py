@@ -84,7 +84,7 @@ def test_to_doit_task():
                 run_notebook,
                 [],
                 {
-                    "base_notebook": raw_notebook_exp,
+                    "raw_notebook": raw_notebook_exp,
                     "unexecuted_notebook": notebook_output_dir
                     / f"{unconfigured.notebook_path.name}_unexecuted.ipynb",
                     "executed_notebook": notebook_output_dir / f"{unconfigured.notebook_path.name}.ipynb",
@@ -147,7 +147,7 @@ def test_to_doit_task_no_configuration():
                 run_notebook,
                 [],
                 {
-                    "base_notebook": raw_notebook_exp,
+                    "raw_notebook": raw_notebook_exp,
                     "unexecuted_notebook": notebook_output_dir
                     / f"{unconfigured.notebook_path.name}_unexecuted.ipynb",
                     "executed_notebook": notebook_output_dir / f"{unconfigured.notebook_path.name}.ipynb",
@@ -272,7 +272,7 @@ def test_to_doit_task_paths(  # noqa: PLR0913
                 run_notebook,
                 [],
                 {
-                    "base_notebook": raw_notebook_exp,
+                    "raw_notebook": raw_notebook_exp,
                     "unexecuted_notebook": notebook_output_dir
                     / f"{unconfigured_notebook_path.name}_unexecuted.ipynb",
                     "executed_notebook": notebook_output_dir / f"{unconfigured_notebook_path.name}.ipynb",

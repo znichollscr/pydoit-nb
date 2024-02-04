@@ -151,7 +151,7 @@ class ConfiguredNotebook:
                     run_notebook,
                     [],
                     {
-                        "base_notebook": raw_notebook,
+                        "raw_notebook": raw_notebook,
                         "unexecuted_notebook": unexecuted_notebook,
                         "executed_notebook": executed_notebook,
                         "notebook_parameters": notebook_parameters,
