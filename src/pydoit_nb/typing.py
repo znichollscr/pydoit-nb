@@ -6,14 +6,16 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol, TypeVar
 
+from attrs import AttrsInstance
+
 try:
     from typing_extensions import TypeAlias
 except ImportError:  # >= python 3.11
     # remove type ignore when mypy applied with python 3.11
     from typing import TypeAlias  # type: ignore
 
+T = TypeVar("T")
 T_co = TypeVar("T_co", covariant=True)
-T_contra = TypeVar("T_contra", contravariant=True)
 
 DoitTaskSpec: TypeAlias = dict[str, Any]
 
@@ -29,29 +31,70 @@ class ConfigBundleLike(Protocol[T_co]):
         ...
 
     @property
+    def config_hydrated_path(self) -> Path:
+        """Path in which to write the hydrated config"""
+        ...
+
+    @property
     def root_dir_output_run(self) -> Path:
         """Root directory in which output is saved"""
         ...
 
     @property
-    def config_hydrated_path(self) -> Path:
-        """Path in which to write the hydrated config"""
+    def run_id(self) -> str:
+        """Run ID for the run to which this config bundle applies"""
         ...
 
 
-class Converter(Protocol[T_contra]):
+AI_contra = TypeVar("AI_contra", bound=AttrsInstance, contravariant=True)
+CB_co = TypeVar("CB_co", bound=ConfigBundleLike[Any], covariant=True)
+
+
+class ConfigBundleCreator(Protocol[AI_contra, CB_co]):
+    """
+    Callable that can be used to create config bundles
+    """
+
+    def __call__(
+        self, config_hydrated: AI_contra, config_hydrated_path: Path, root_dir_output_run: Path
+    ) -> CB_co:
+        """
+        Create :obj:`ConfigBundleLike`
+
+        Parameters
+        ----------
+        config_hydrated
+            Hydrated config to include in the bundle
+
+        config_hydrated_path
+            Path where the hydrated config is saved to disk
+
+        root_dir_output_run
+            Root directory for the run's output
+
+        Returns
+        -------
+            Created :obj:`ConfigBundleLike`
+        """
+        ...  # pragma: no cover
+
+
+class Converter(Protocol):
     """
     Protocol for converters
     """
 
-    def dumps(self, config: T_contra, sort_keys: bool = False) -> str:
+    def dumps(self, obj: Any, sort_keys: bool = False) -> str:
         """
         Dump configuration to a string
 
         Parameters
         ----------
-        config
-            Configuration to dump
+        obj
+            Object to dump. The type hints aren't great here. The assumption is
+            that the dumping protocol should handle any type issues (I think
+            static typing doesn't really work here, for reasons I don't fully
+            have my head around).
 
         sort_keys
             Should the keys be sorted in the output?
@@ -62,7 +105,7 @@ class Converter(Protocol[T_contra]):
         """
         ...  # pragma: no cover
 
-    def loads(self, inp: str, target: type[T_co]) -> T_co:
+    def loads(self, inp: str, target: type[T]) -> T:
         """
         Load an instance of ``target`` from a string
 
@@ -79,10 +122,6 @@ class Converter(Protocol[T_contra]):
             Loaded instance of ``target``
         """
         ...  # pragma: no cover
-
-
-HandleableConfiguration: TypeAlias = str
-"""Config which we can handle and pass to a notebook via papermill"""
 
 
 class NotebookConfigLike(Protocol):

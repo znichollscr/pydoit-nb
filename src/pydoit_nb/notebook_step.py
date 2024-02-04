@@ -15,12 +15,13 @@ from attrs import frozen
 
 from pydoit_nb.config_handling import get_step_config_ids
 
-from .typing import ConfigBundleLike, Converter, DoitTaskSpec, HandleableConfiguration
+from .typing import ConfigBundleLike, Converter, DoitTaskSpec
 
 if TYPE_CHECKING:
     from .notebook import ConfiguredNotebook, UnconfiguredNotebook
 
 
+C = TypeVar("C")
 CB_contra = TypeVar("CB_contra", contravariant=True, bound=ConfigBundleLike[Any])
 
 
@@ -38,7 +39,7 @@ class ConfigureNotebooksCallable(Protocol[CB_contra]):
 
 
 @frozen
-class UnconfiguredNotebookBasedStep(Generic[CB_contra]):
+class UnconfiguredNotebookBasedStep(Generic[C, CB_contra]):
     """
     An unconfigured notebook-based step
 
@@ -60,7 +61,7 @@ class UnconfiguredNotebookBasedStep(Generic[CB_contra]):
         self,
         config_bundle: CB_contra,
         root_dir_raw_notebooks: Path,
-        converter: Converter[tuple[HandleableConfiguration, ...]] | None = None,
+        converter: Converter | None = None,
         clean: bool = True,
     ) -> Iterable[DoitTaskSpec]:
         """

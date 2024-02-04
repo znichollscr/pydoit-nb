@@ -23,6 +23,7 @@ notebooks = ["notebook"]
 pytest = "^7.3.1"
 pandas = "^2.2.0"
 pint = "^0.23"
+pytest-regressions = "^2.5.0"
 
 [tool.poetry.group.docs.dependencies]
 myst-nb = "^0.17.0"
@@ -81,6 +82,7 @@ formats = "ipynb,py:percent"
 [tool.pytest.ini_options]
 addopts = [
     "--import-mode=importlib",
+    "--ignore=tests/test-data",
 ]
 
 [tool.ruff]
