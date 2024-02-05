@@ -137,4 +137,7 @@ def test_task_run(example_project_dir, tmp_path_factory):
     # Other tests could go in here
 
 
-# - test execute realises that task doesn't need to be re-run
+# - test that execute realises that task doesn't need to be re-run
+#   - run up to a given notebook step
+#   - check the status
+#   - ensure the status shows that the notebooks we've just been run don't need to be run again
