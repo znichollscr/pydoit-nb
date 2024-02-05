@@ -11,3 +11,9 @@ print\_config
 =============
 
 .. autofunction:: print_config
+
+
+gen\_show\_configuration\_task
+==============================
+
+.. autofunction:: gen_show_configuration_task
