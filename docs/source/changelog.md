@@ -19,6 +19,16 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## pydoit-nb v0.3.0 (2024-02-05)
+
+
+### Features
+
+- Added end-to-end testing and all required features to support it.
+
+  This should be considered to be the first, functional, stable release. ([#3](https://github.com/climate-resource/pydoit-nb/pulls/3))
+
+
 ## pydoit-nb v0.2.1 (2024-02-03)
 
 
