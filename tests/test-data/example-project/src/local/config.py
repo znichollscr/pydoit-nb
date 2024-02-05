@@ -11,6 +11,7 @@ from pathlib import Path
 from attrs import field, frozen
 
 import pydoit_nb.serialization
+from pydoit_nb.attrs_helpers import make_attrs_validator_compatible_single_input
 from pydoit_nb.config_helpers import (
     assert_path_exists,
     assert_path_is_absolute,
@@ -88,16 +89,24 @@ class Config:
     name: str
     """Name of the configuration"""
 
-    set_seed: list[SetSeedConfig] = field(validator=[assert_step_config_ids_are_unique])
+    set_seed: list[SetSeedConfig] = field(
+        validator=[make_attrs_validator_compatible_single_input(assert_step_config_ids_are_unique)]
+    )
     """Configurations to use for setting the seed"""
 
-    make_draws: list[MakeDrawsConfig] = field(validator=[assert_step_config_ids_are_unique])
+    make_draws: list[MakeDrawsConfig] = field(
+        validator=[make_attrs_validator_compatible_single_input(assert_step_config_ids_are_unique)]
+    )
     """Configurations to use for making the draws"""
 
-    retrieve_data: list[RetrieveDataConfig] = field(validator=[assert_step_config_ids_are_unique])
+    retrieve_data: list[RetrieveDataConfig] = field(
+        validator=[make_attrs_validator_compatible_single_input(assert_step_config_ids_are_unique)]
+    )
     """Configurations to use for retrieving data"""
 
-    plot: list[PlotConfig] = field(validator=[assert_step_config_ids_are_unique])
+    plot: list[PlotConfig] = field(
+        validator=[make_attrs_validator_compatible_single_input(assert_step_config_ids_are_unique)]
+    )
     """Configurations to use for plotting"""
 
 
@@ -125,13 +134,18 @@ class ConfigBundle:
     config_hydrated_path: Path
     """Path in/from which to read/write ``config_hydrated``"""
 
-    root_dir_output: Path = field(validator=[assert_path_is_absolute, assert_path_exists])
+    root_dir_output: Path = field(
+        validator=[
+            make_attrs_validator_compatible_single_input(assert_path_is_absolute),
+            make_attrs_validator_compatible_single_input(assert_path_exists),
+        ]
+    )
     """Root output directory"""
 
     root_dir_output_run: Path = field(
         validator=[
-            assert_path_is_absolute,
-            assert_path_exists,
+            make_attrs_validator_compatible_single_input(assert_path_is_absolute),
+            make_attrs_validator_compatible_single_input(assert_path_exists),
             assert_path_is_subdirectory_of_root_dir_output,
         ]
     )

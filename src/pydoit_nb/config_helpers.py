@@ -8,7 +8,6 @@ from collections.abc import Collection
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pydoit_nb.attrs_helpers import make_attrs_validator_compatible_single_input
 from pydoit_nb.config_handling import get_step_config_ids
 from pydoit_nb.typing import NotebookConfigLike
 
@@ -18,7 +17,6 @@ if TYPE_CHECKING:
     import attr
 
 
-@make_attrs_validator_compatible_single_input
 def assert_path_exists(inp: Path) -> None:
     """
     Assert that a path exists
@@ -37,7 +35,6 @@ def assert_path_exists(inp: Path) -> None:
         raise FileNotFoundError(f"{inp} does not exist")  # noqa: TRY003
 
 
-@make_attrs_validator_compatible_single_input
 def assert_path_is_absolute(inp: Path) -> None:
     """
     Assert that a path is an absolute path
@@ -56,7 +53,6 @@ def assert_path_is_absolute(inp: Path) -> None:
         raise AssertionError(f"{inp} is not absolute")  # noqa: TRY003
 
 
-@make_attrs_validator_compatible_single_input
 def assert_step_config_ids_are_unique(inp: Collection[NotebookConfigLike]) -> None:
     """
     Assert that all the :attr:`step_config_id` in a collection are unique
