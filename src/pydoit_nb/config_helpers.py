@@ -8,6 +8,7 @@ from collections.abc import Collection
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from pydoit_nb.attrs_helpers import add_attrs_context
 from pydoit_nb.config_handling import get_step_config_ids
 from pydoit_nb.typing import NotebookConfigLike
 
@@ -79,6 +80,7 @@ def assert_step_config_ids_are_unique(inp: Collection[NotebookConfigLike]) -> No
         raise AssertionError(msg)
 
 
+@add_attrs_context
 def assert_path_is_subdirectory_of_root_dir_output(
     instance: Any, attribute: attr.Attribute[Any], value: Path
 ) -> None:
@@ -103,7 +105,7 @@ def assert_path_is_subdirectory_of_root_dir_output(
     """
     if not value.is_relative_to(instance.root_dir_output):
         msg = (
-            f"{attribute} is not a sub-directory of root_dir_output. "
-            f"{attribute}={value}. root_dir_output={instance.root_dir_output!r}"
+            f"``{attribute.name}`` is not a sub-directory of root_dir_output. "
+            f"{attribute.name}={value!r}. root_dir_output={instance.root_dir_output!r}"
         )
         raise AssertionError(msg)
