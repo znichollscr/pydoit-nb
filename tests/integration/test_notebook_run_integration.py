@@ -8,6 +8,7 @@ import pytest
 from pydoit_nb.notebook_run import run_notebook
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
     "notebook_parameters, notebook_parameters_exp",
     (

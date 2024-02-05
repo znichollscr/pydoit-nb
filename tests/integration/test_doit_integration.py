@@ -86,6 +86,7 @@ def setup_venv(venv_dir, env, remove_lock_if_added: bool = True):
     return env
 
 
+@pytest.mark.slow
 def test_task_display(example_project_dir, tmp_path_factory, file_regression):
     env = copy.deepcopy(os.environ)
     env = setup_venv(example_project_dir, env)
@@ -111,6 +112,7 @@ def test_task_display(example_project_dir, tmp_path_factory, file_regression):
     file_regression.check(res_stdout)
 
 
+@pytest.mark.slow
 def test_task_run(example_project_dir, tmp_path_factory):
     # No regression test here at the moment. Maybe we'll at that in if it seems helpful.
     env = copy.deepcopy(os.environ)

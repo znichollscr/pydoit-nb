@@ -1,0 +1,89 @@
+- basename: (0xx_first/001_first) First notebook
+  doc: Docs here
+  name: null
+- actions:
+  - - '<function run_notebook '
+    - []
+    - executed_notebook: /to/output/directory/root/notebooks-executed/one/only/001_first.ipynb
+      notebook_parameters:
+        config_file: /to/output/directory/root/config-hydrated.yaml
+        step_config_id: only
+      raw_notebook: /to/somewhere/0xx_first/001_first.py
+      unexecuted_notebook: /to/output/directory/root/notebooks-executed/one/only/001_first_unexecuted.ipynb
+  basename: (0xx_first/001_first) First notebook
+  clean: true
+  doc: Docs here. step_config_id='only'
+  file_dep:
+  - /to/somewhere/0xx_first/001_first.py
+  name: only
+  targets: []
+  uptodate:
+  - '<doit.tools.config_changed object '
+- basename: (1xx_second/111_step) Second notebook
+  doc: Docs here for two
+  name: null
+- actions:
+  - - '<function run_notebook '
+    - []
+    - executed_notebook: /to/output/directory/root/notebooks-executed/two/solo/111_step.ipynb
+      notebook_parameters:
+        config_file: /to/output/directory/root/config-hydrated.yaml
+        step_config_id: solo
+      raw_notebook: /to/somewhere/1xx_second/111_step.py
+      unexecuted_notebook: /to/output/directory/root/notebooks-executed/two/solo/111_step_unexecuted.ipynb
+  basename: (1xx_second/111_step) Second notebook
+  clean: true
+  doc: Docs here for two. step_config_id='solo'
+  file_dep:
+  - /to/somewhere/1xx_second/111_step.py
+  name: solo
+  targets: []
+  uptodate:
+  - '<doit.tools.config_changed object '
+- basename: Zenodo bundle
+  docs: Left to to implementer to connect with other pydoit_nb functions. Here we
+    just check it exists and that it received the other tasks as predecessors.
+  name: Zenodo bundle generation
+  previous_tasks:
+  - basename: (0xx_first/001_first) First notebook
+    doc: Docs here
+    name: null
+  - actions:
+    - - '<function run_notebook '
+      - []
+      - executed_notebook: /to/output/directory/root/notebooks-executed/one/only/001_first.ipynb
+        notebook_parameters:
+          config_file: /to/output/directory/root/config-hydrated.yaml
+          step_config_id: only
+        raw_notebook: /to/somewhere/0xx_first/001_first.py
+        unexecuted_notebook: /to/output/directory/root/notebooks-executed/one/only/001_first_unexecuted.ipynb
+    basename: (0xx_first/001_first) First notebook
+    clean: true
+    doc: Docs here. step_config_id='only'
+    file_dep:
+    - /to/somewhere/0xx_first/001_first.py
+    name: only
+    targets: []
+    uptodate:
+    - '<doit.tools.config_changed object '
+  - basename: (1xx_second/111_step) Second notebook
+    doc: Docs here for two
+    name: null
+  - actions:
+    - - '<function run_notebook '
+      - []
+      - executed_notebook: /to/output/directory/root/notebooks-executed/two/solo/111_step.ipynb
+        notebook_parameters:
+          config_file: /to/output/directory/root/config-hydrated.yaml
+          step_config_id: solo
+        raw_notebook: /to/somewhere/1xx_second/111_step.py
+        unexecuted_notebook: /to/output/directory/root/notebooks-executed/two/solo/111_step_unexecuted.ipynb
+    basename: (1xx_second/111_step) Second notebook
+    clean: true
+    doc: Docs here for two. step_config_id='solo'
+    file_dep:
+    - /to/somewhere/1xx_second/111_step.py
+    name: solo
+    targets: []
+    uptodate:
+    - '<doit.tools.config_changed object '
