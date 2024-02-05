@@ -4,6 +4,7 @@ Test config_handling
 from __future__ import annotations
 
 import re
+from functools import partial
 from pathlib import Path
 
 import pytest
@@ -12,8 +13,10 @@ from attrs import define
 from pydoit_nb.config_handling import (
     get_config_for_step_id,
     get_step_config_ids,
+    load_hydrate_write_config_bundle,
     update_attr_value,
 )
+from pydoit_nb.serialization import converter_yaml, load_config_from_file
 
 
 @define
@@ -45,6 +48,14 @@ class ConfigA:
 @define
 class ConfigB:
     step_c: list[StepConfigC]
+
+
+@define
+class ConfigBundleA:
+    config_hydrated: ConfigB
+    config_hydrated_path: Path
+    root_dir_output_run: Path
+    run_id: str
 
 
 def test_get_step_config_ids():
@@ -177,6 +188,63 @@ def test_update_attr_value(inp, exp, prefix):
     assert res == exp
 
 
-# - update_attr_value
-# - insert_path_prefix
-#   - lots of edge cases here...
+def test_load_hydrate_write_config_bundle(tmp_path):
+    # Techincally not a unit test because it relies on our default converter_yaml...
+
+    configuration_file = tmp_path / "source" / "configuration_file.yaml"
+    configuration_file.parent.mkdir(parents=True)
+
+    root_dir_output_run = tmp_path / "output-bundle" / "here"
+    root_dir_output_run.mkdir(parents=True)
+
+    run_id = "test_load_hydrate_write_config_bundle"
+
+    load_config = partial(load_config_from_file, target=ConfigB, converter=converter_yaml)
+
+    def create_cb(
+        config_hydrated: ConfigB,
+        config_hydrated_path: Path,
+        root_dir_output_run: Path,
+    ) -> ConfigBundleA:
+        return ConfigBundleA(
+            config_hydrated=config_hydrated,
+            config_hydrated_path=config_hydrated_path,
+            root_dir_output_run=root_dir_output_run,
+            run_id=run_id,
+        )
+
+    config = ConfigB(
+        step_c=[
+            StepConfigC(
+                step_config_id="only",
+                helper=3.2,
+                output=Path("to") / "somewhere.txt",
+                config={"something": "here"},
+            )
+        ]
+    )
+
+    with open(configuration_file, "w") as fh:
+        fh.write(converter_yaml.dumps(config))
+
+    res = load_hydrate_write_config_bundle(
+        configuration_file=configuration_file,
+        load_configuration_file=load_config,
+        create_config_bundle=create_cb,
+        root_dir_output_run=root_dir_output_run,
+        converter=converter_yaml,
+    )
+
+    assert isinstance(res, ConfigBundleA)
+    assert isinstance(res.config_hydrated, ConfigB)
+    assert res.config_hydrated_path == root_dir_output_run / configuration_file.name
+    assert res.root_dir_output_run == root_dir_output_run
+    assert res.run_id == run_id
+
+    assert all(c.output.is_absolute() for c in res.config_hydrated.step_c)
+    assert all(c.output.relative_to(root_dir_output_run) for c in res.config_hydrated.step_c)
+
+    with open(res.config_hydrated_path) as fh:
+        config_written = converter_yaml.loads(fh.read(), ConfigB)
+
+    assert res.config_hydrated == config_written
