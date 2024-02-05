@@ -17,6 +17,40 @@ if TYPE_CHECKING:
     T = TypeVar("T")
 
 
+class AttributeInitialisationError(ValueError):
+    """
+    Raised when there is an issue while initialising an :obj:`attr.Attribute`
+    """
+
+    def __init__(
+        self,
+        instance: Any,
+        attribute: attr.Attribute[Any],
+        value: T,
+    ) -> None:
+        """
+        Initialise the error
+
+        Parameters
+        ----------
+        instance
+            Instance being initialised
+
+        attribute
+            Attribute being set
+
+        value
+            Value being used to set the attribute
+        """
+        error_msg = (
+            "Error raised while initialising attribute "
+            f"``{attribute.name}`` of ``{type(instance)}``. "
+            f"Value provided: {value}"
+        )
+
+        super().__init__(error_msg)
+
+
 def add_attrs_context(
     original: Callable[[Any, attr.Attribute[Any], T], None],
 ) -> Callable[[Any, attr.Attribute[Any], T], None]:
@@ -50,14 +84,7 @@ def add_attrs_context(
         try:
             original(instance, attribute, value)
         except Exception as exc:
-            if hasattr(exc, "add_note"):
-                exc.add_note(
-                    "\nError raised while initialising attribute "
-                    f"``{attribute.name}`` of ``{type(instance)}``. "
-                    f"\nValue provided: {value}"
-                )
-
-            raise
+            raise AttributeInitialisationError(instance=instance, attribute=attribute, value=value) from exc
 
     return with_attrs_context
 
