@@ -16,7 +16,6 @@ numpy = "^1.26.3"
 cattrs = "^23.2.3"
 
 [tool.poetry.extras]
-extras = ["numpy"]
 notebooks = ["notebook"]
 
 [tool.poetry.group.tests.dependencies]

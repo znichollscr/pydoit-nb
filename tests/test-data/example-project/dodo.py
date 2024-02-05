@@ -44,13 +44,8 @@ from collections.abc import Iterable
 from functools import partial
 from pathlib import Path
 
-import local_make_draws
-import local_plot
-import local_retrieve_data
-
-# Not great as package isn't installed, but fine for testing
-import local_set_seed
-from local_config import Config, ConfigBundle, converter_yaml, load_config_from_file
+from local.config import Config, ConfigBundle, converter_yaml, load_config_from_file
+from local.notebook_steps import make_draws, plot, retrieve_data, set_seed
 
 from pydoit_nb.config_handling import load_hydrate_write_config_bundle
 from pydoit_nb.display import gen_show_configuration_task
@@ -172,10 +167,10 @@ def task_generate_workflow_tasks() -> Iterable[DoitTaskSpec]:
         converter=converter_yaml,
         # Lots of control given through these bits
         step_defining_modules=[
-            local_set_seed,
-            local_make_draws,
-            local_retrieve_data,
-            local_plot,
+            set_seed,
+            make_draws,
+            retrieve_data,
+            plot,
         ],
         gen_zenodo_bundle_task=partial(
             gen_copy_source_into_output_tasks,

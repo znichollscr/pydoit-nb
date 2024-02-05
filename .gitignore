@@ -1,6 +1,6 @@
 # Test example output and DB
 tests/test-data/example-project/output-bundles
-tests/test-data/example-project/test-task-display.json
+tests/test-data/example-project/*.json
 
 # Notebooks
 *.ipynb

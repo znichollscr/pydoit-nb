@@ -22,7 +22,8 @@
 
 # %%
 from local.config import load_config_from_file
-from local.pydoit_nb.config_handling import get_config_for_step_id
+
+from pydoit_nb.config_handling import get_config_for_step_id
 
 # %% [markdown]
 # ## Define the notebook-based step this notebook belongs to
