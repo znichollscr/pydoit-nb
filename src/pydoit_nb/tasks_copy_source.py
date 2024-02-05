@@ -544,8 +544,10 @@ def copy_zenodo_default(in_path: Path, out_path: Path, version: str) -> None:
 
 copy_file_default = swallow_output(shutil.copy2)
 
-copy_tree_default = partial(
-    shutil.copytree,
-    ignore=shutil.ignore_patterns("*.pyc", "__pycache__"),
-    dirs_exist_ok=True,
+copy_tree_default = swallow_output(
+    partial(
+        shutil.copytree,
+        ignore=shutil.ignore_patterns("*.pyc", "__pycache__"),
+        dirs_exist_ok=True,
+    )
 )

@@ -1,0 +1,23 @@
+name: test_example-project-config
+set_seed:
+- step_config_id: "only"
+  seed: 123
+  file_seed: data/processed/seed.txt
+make_draws:
+- step_config_id: "first"
+  factor: 1.2
+  file_draws: data/processed/first_draws.yaml
+  file_draws_scaled: data/processed/first_draws_scaled.yaml
+- step_config_id: "second"
+  factor: 2.4
+  file_draws: data/processed/second_draws.yaml
+  file_draws_scaled: data/processed/second_draws_scaled.yaml
+retrieve_data:
+- step_config_id: "excellent"
+  source: "excellent"
+  file_raw_data: data/raw/excellent_raw_data.csv
+  file_clean_data: data/interim/excellent_clean_data.csv
+plot:
+- step_config_id: "only"
+  colour: "blue"
+  file_plot: figures/blue_plot.pdf

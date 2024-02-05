@@ -29,3 +29,9 @@ get\_config\_for\_step\_id
 ==========================
 
 .. autofunction:: get_config_for_step_id
+
+
+load\_hydrate\_write\_config\_bundle
+====================================
+
+.. autofunction:: load_hydrate_write_config_bundle

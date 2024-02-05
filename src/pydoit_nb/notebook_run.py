@@ -76,7 +76,7 @@ def run_notebook(  # noqa: PLR0913
     """
     Run a notebook
 
-    This loads the notebook ``base_notebook`` using jupytext, then writes it
+    This loads the notebook ``raw_notebook`` using jupytext, then writes it
     as an ``.ipynb`` file to ``unexecuted_notebook``. It then runs this
     unexecuted notebook with papermill, writing it to ``executed_notebook``.
 

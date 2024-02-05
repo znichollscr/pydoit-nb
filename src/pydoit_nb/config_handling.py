@@ -5,18 +5,19 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, TypeVar, cast, overload
+from typing import Any, Callable, TypeVar, cast, overload
 
 import attrs
 import numpy as np
 from attrs import AttrsInstance, evolve, fields
 
-from .typing import NotebookConfigLike
+from pydoit_nb.serialization import write_config_in_config_bundle_to_disk
+from pydoit_nb.typing import ConfigBundleCreator, ConfigBundleLike, Converter, NotebookConfigLike
 
 T = TypeVar("T")
 
 
-def insert_path_prefix(config: AttrsInstance, prefix: Path) -> AttrsInstance:
+def insert_path_prefix(config: AI, prefix: Path) -> AI:
     """
     Insert path prefix into config attributes
 
@@ -180,3 +181,53 @@ def get_config_for_step_id(
         f"Couldn't find {step_config_id=} for {step=}. "
         f"Available step config IDs: {available_step_config_ids}"
     )
+
+
+AI = TypeVar("AI", bound=AttrsInstance)
+CB = TypeVar("CB", bound=ConfigBundleLike[Any])
+
+
+def load_hydrate_write_config_bundle(
+    configuration_file: Path,
+    load_configuration_file: Callable[[Path], AI],
+    create_config_bundle: ConfigBundleCreator[AI, CB],
+    root_dir_output_run: Path,
+    converter: Converter,
+) -> CB:
+    """
+    Load, hydrate and write (to disk) :obj:`ConfigBundleLike`
+
+    Parameters
+    ----------
+    configuration_file
+        File from which to load the configuration
+
+    load_configuration_file
+        Callable to use to load the configuration from a file
+
+    create_config_bundle
+        Callable to use to create the :obj:`ConfigBundleLike` from the
+        loaded configuration, the path in which the hydrated config will
+        be written and the run's output root directory.
+
+    root_dir_output_run
+        Root directory in which to write output for this run
+
+    converter
+        Converter to use to serialise the output :obj:`ConfigBundleLike` to
+        disk
+
+    Returns
+    -------
+        Loaded :obj:`ConfigBundleLike`
+    """
+    config = load_configuration_file(configuration_file)
+    config = insert_path_prefix(config, prefix=root_dir_output_run)
+    config_bundle = create_config_bundle(
+        config_hydrated=config,
+        config_hydrated_path=root_dir_output_run / configuration_file.name,
+        root_dir_output_run=root_dir_output_run,
+    )
+    write_config_in_config_bundle_to_disk(config_bundle=config_bundle, converter=converter)
+
+    return config_bundle

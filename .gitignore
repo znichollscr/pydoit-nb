@@ -1,3 +1,7 @@
+# Test example output and DB
+tests/test-data/example-project/output-bundles
+tests/test-data/example-project/*.json
+
 # Notebooks
 *.ipynb
 

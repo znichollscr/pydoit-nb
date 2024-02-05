@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "local"
+version = "0.0.0"
+description = "Local code for example notebook running workflow"
+authors = [
+    "Zebedee Nicholls <zebedee.nicholls@climate-resource.com>",
+]
+packages = [{ include = "local", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+doit = "^0.36.0"
+notebook = "^7.0.0"
+matplotlib = "^3.8.2"

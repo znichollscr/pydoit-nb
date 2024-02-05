@@ -7,16 +7,17 @@ pydoit\_nb.typing
 
 
 
-HandleableConfiguration
-=======================
-
-.. autodata:: HandleableConfiguration
-
-
 ConfigBundleLike
 ================
 
 .. autoclass:: ConfigBundleLike
+   :members:
+
+
+ConfigBundleCreator
+===================
+
+.. autoclass:: ConfigBundleCreator
    :members:
 
 

@@ -4,7 +4,7 @@ Notebook defining classes
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import frozen
 from doit.tools import config_changed  # type: ignore
@@ -12,7 +12,9 @@ from doit.tools import config_changed  # type: ignore
 from .notebook_run import run_notebook
 
 if TYPE_CHECKING:
-    from .typing import Converter, DoitTaskSpec, HandleableConfiguration
+    from .typing import Converter, DoitTaskSpec
+
+C = TypeVar("C")
 
 
 @frozen
@@ -50,7 +52,22 @@ class ConfiguredNotebook:
     The unconfigured notebook which should be combined with the configuration
     """
 
-    configuration: tuple[HandleableConfiguration, ...] | None
+    dependencies: tuple[Path, ...]
+    """Paths on which the notebook depends"""
+
+    targets: tuple[Path, ...]
+    """Paths which the notebook creates/controls"""
+
+    config_file: Path
+    """Path to the config file to use with the notebook"""
+
+    step_config_id: str
+    """`step_config_id` to use for this run of the notebook"""
+
+    # Type hinting could be improved, but even attrs seems to just use Any
+    # for the signature of `dumps` so I don't think it is worth diving down
+    # that rabbit hole right now.
+    configuration: tuple[Any, ...] | None = None
     """
     Configuration used by the notebook.
 
@@ -65,24 +82,12 @@ class ConfiguredNotebook:
     # https://pydoit.org/cmd-other.html#forget (although they also talk about
     # non-file dependencies elsewhere so maybe these are just out of date docs)
 
-    dependencies: tuple[Path, ...]
-    """Paths on which the notebook depends"""
-
-    targets: tuple[Path, ...]
-    """Paths which the notebook creates/controls"""
-
-    config_file: Path
-    """Path to the config file to use with the notebook"""
-
-    step_config_id: str
-    """`step_config_id` to use for this run of the notebook"""
-
     def to_doit_task(  # noqa: PLR0913
         self,
         root_dir_raw_notebooks: Path,
         notebook_output_dir: Path,
         base_task: DoitTaskSpec,
-        converter: Converter[tuple[HandleableConfiguration, ...]] | None = None,
+        converter: Converter | None = None,
         clean: bool = True,
         config_changed_class: Any = config_changed,
     ) -> DoitTaskSpec:
@@ -146,7 +151,7 @@ class ConfiguredNotebook:
                     run_notebook,
                     [],
                     {
-                        "base_notebook": raw_notebook,
+                        "raw_notebook": raw_notebook,
                         "unexecuted_notebook": unexecuted_notebook,
                         "executed_notebook": executed_notebook,
                         "notebook_parameters": notebook_parameters,

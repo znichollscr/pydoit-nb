@@ -61,7 +61,7 @@ N = TypeVar("N", bound=nptype.NDArray[Union[np.floating[Any], np.integer[Any]]])
 
 def write_config_in_config_bundle_to_disk(
     config_bundle: ConfigBundleLike[U],
-    converter: Converter[U],
+    converter: Converter,
 ) -> Path:
     """
     Write the configuration in a configuration bundle to disk
@@ -88,7 +88,7 @@ def write_config_in_config_bundle_to_disk(
     return write_path
 
 
-def load_config_from_file(config_file: Path, target: type[T], converter: Converter[U]) -> T:
+def load_config_from_file(config_file: Path, target: type[T], converter: Converter) -> T:
     """
     Load configuration from file
 
@@ -120,7 +120,7 @@ converter_yaml = cattrs.preconf.pyyaml.make_converter()
 UnstructuredArray: TypeAlias = Union[Sequence[Union[int, float]], Sequence["UnstructuredArray"]]
 
 
-def unstructure_np_array(arr: nptype.NDArray[np.float64]) -> UnstructuredArray:
+def unstructure_np_array(arr: N) -> UnstructuredArray:
     """
     Unstructure :obj:`npt.ArrayLike`
 

@@ -1,0 +1,20 @@
+R (001_set-seed) set seed                       Set the seed for our runs
+R (001_set-seed) set seed:only                  Set the seed for our runs. step_config_id='only'
+R (011_make-draws) make draws - draw            Make draws from our distributions
+R (011_make-draws) make draws - draw:first      Make draws from our distributions. step_config_id='first'
+R (011_make-draws) make draws - draw:second     Make draws from our distributions. step_config_id='second'
+R (012_scale-draws) make draws - scale          Scale the draws based on a scaling factor
+R (012_scale-draws) make draws - scale:first    Scale the draws based on a scaling factor. step_config_id='first'
+R (012_scale-draws) make draws - scale:second   Scale the draws based on a scaling factor. step_config_id='second'
+R (020_retrieve-data) Retrieve data             Retrieve data from a source
+R (020_retrieve-data) Retrieve data:excellent   Retrieve data from a source. step_config_id='excellent'
+R (110_make-plots) Make our plots               Make our plots in a specific colour
+R (110_make-plots) Make our plots:only          Make our plots in a specific colour. step_config_id='only'
+R copy_source_into_output                       Generate tasks to copy the source into the output directory
+R copy_source_into_output:copy README           Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../README.md',)
+R copy_source_into_output:copy Zenodo           Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../zenodo.json',)
+R copy_source_into_output:copy raw config       Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../example-project-config-raw.yaml',)
+R copy_source_into_output:copy raw notebooks    Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../notebooks',)
+R copy_source_into_output:copy source           Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../src',)
+R generate_workflow_tasks                       Generate tasks for the workflow
+R generate_workflow_tasks:Show configuration    
