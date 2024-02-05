@@ -13,9 +13,9 @@
 # ---
 
 # %% [markdown]
-# # Set seed
+# # Retrieve data
 #
-# Set the seed for the workflow
+# Retrieve data from source
 
 # %% [markdown]
 # ## Imports
@@ -29,7 +29,7 @@ from pydoit_nb.config_handling import get_config_for_step_id
 # ## Define the notebook-based step this notebook belongs to
 
 # %%
-step: str = "set_seed"
+step: str = "retrieve_data"
 
 # %% [markdown]
 # ## Parameters
@@ -45,7 +45,24 @@ step_config_id: str = "only"  # config ID to select for this branch
 config = load_config_from_file(config_file)
 config_step = get_config_for_step_id(config=config, step=step, step_config_id=step_config_id)
 
+# %% [markdown]
+# ## Action
+
+# %% [markdown]
+# ### Retrieve raw data
+
 # %%
-config_step.file_seed.parent.mkdir(exist_ok=True, parents=True)
-with open(config_step.file_seed, "w") as fh:
-    fh.write(str(config_step.seed))
+config_step.file_raw_data.parent.mkdir(exist_ok=True, parents=True)
+with open(config_step.file_raw_data, "w") as fh:
+    fh.write(config_step.source)
+
+# %% [markdown]
+# ### Clean data
+
+# %%
+retrieved = f"Retrieved from {config_step.source}"
+
+# %%
+config_step.file_clean_data.parent.mkdir(exist_ok=True, parents=True)
+with open(config_step.file_clean_data, "w") as fh:
+    fh.write(retrieved)

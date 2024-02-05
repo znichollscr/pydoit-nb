@@ -13,15 +13,16 @@
 # ---
 
 # %% [markdown]
-# # Set seed
+# # Make draws
 #
-# Set the seed for the workflow
+# Make draws of data
 
 # %% [markdown]
 # ## Imports
 
 # %%
-from local.config import load_config_from_file
+import numpy as np
+from local.config import converter_yaml, load_config_from_file
 
 from pydoit_nb.config_handling import get_config_for_step_id
 
@@ -29,7 +30,7 @@ from pydoit_nb.config_handling import get_config_for_step_id
 # ## Define the notebook-based step this notebook belongs to
 
 # %%
-step: str = "set_seed"
+step: str = "make_draws"
 
 # %% [markdown]
 # ## Parameters
@@ -44,8 +45,36 @@ step_config_id: str = "only"  # config ID to select for this branch
 # %%
 config = load_config_from_file(config_file)
 config_step = get_config_for_step_id(config=config, step=step, step_config_id=step_config_id)
+config_set_seed = get_config_for_step_id(config=config, step="set_seed", step_config_id="only")
+
+# %% [markdown]
+# ## Action
 
 # %%
-config_step.file_seed.parent.mkdir(exist_ok=True, parents=True)
-with open(config_step.file_seed, "w") as fh:
-    fh.write(str(config_step.seed))
+N_DRAWS: int = 25
+
+# %%
+with open(config_set_seed.file_seed) as fh:
+    seed = int(fh.read())
+
+seed
+
+# %% [markdown]
+# ### Make draws
+
+# %%
+generator = np.random.Generator(np.random.PCG64(seed))
+
+# %%
+cov = np.array([[0.9, 0.1], [0.1, 0.3]])
+draws = generator.multivariate_normal(
+    mean=np.zeros_like(np.diag(cov)),
+    cov=cov,
+    size=N_DRAWS,
+)
+
+# %%
+with open(config_step.file_draws, "w") as fh:
+    fh.write(converter_yaml.dumps(draws))
+
+config_step.file_draws

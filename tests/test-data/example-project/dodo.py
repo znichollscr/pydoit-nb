@@ -161,6 +161,16 @@ def task_generate_workflow_tasks() -> Iterable[DoitTaskSpec]:
         "doc": "Generate tasks for the workflow",
     }
 
+    # not worrying about full README checks here
+    def copy_readme(in_path, out_path, run_id, config_file):
+        with open(in_path) as fh:
+            raw = fh.read()
+
+        with open(out_path, "w") as fh:
+            fh.write(raw)
+            fh.write(f"Run ID: {run_id}")
+            fh.write(f"Config file: {config_file}")
+
     yield from generate_all_tasks(
         config_bundle=config_bundle,
         root_dir_raw_notebooks=root_dir_raw_notebooks,
@@ -180,7 +190,8 @@ def task_generate_workflow_tasks() -> Iterable[DoitTaskSpec]:
             root_dir_raw_notebooks=root_dir_raw_notebooks,
             config_file_raw=configuration_file,
             other_files_to_copy=(),
-            src_dir="src",  # nothing in here for this example, but to illustrate the point
+            src_dir="src",
+            copy_readme=copy_readme,
         ),
     )
 

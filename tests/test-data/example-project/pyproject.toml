@@ -11,3 +11,4 @@ packages = [{ include = "local", from = "src" }]
 python = ">=3.9"
 doit = "^0.36.0"
 notebook = "^7.0.0"
+matplotlib = "^3.8.2"

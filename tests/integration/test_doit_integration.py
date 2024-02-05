@@ -134,7 +134,7 @@ def test_task_run(example_project_dir, tmp_path_factory):
     # This may require actually parsing the stdout.
     assert f"run_id: {env['EXAMPLE_PROJECT_RUN_ID']}" in res_stdout
 
-    assert False, "Do some other tests of run here?"
+    # Other tests could go in here
 
 
 # - test execute realises that task doesn't need to be re-run

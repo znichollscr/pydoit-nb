@@ -13,15 +13,17 @@
 # ---
 
 # %% [markdown]
-# # Set seed
+# # Scale draws
 #
-# Set the seed for the workflow
+# Scale the draws
 
 # %% [markdown]
 # ## Imports
 
 # %%
-from local.config import load_config_from_file
+import numpy as np
+import numpy.typing as nptype
+from local.config import converter_yaml, load_config_from_file
 
 from pydoit_nb.config_handling import get_config_for_step_id
 
@@ -29,7 +31,7 @@ from pydoit_nb.config_handling import get_config_for_step_id
 # ## Define the notebook-based step this notebook belongs to
 
 # %%
-step: str = "set_seed"
+step: str = "make_draws"
 
 # %% [markdown]
 # ## Parameters
@@ -45,7 +47,22 @@ step_config_id: str = "only"  # config ID to select for this branch
 config = load_config_from_file(config_file)
 config_step = get_config_for_step_id(config=config, step=step, step_config_id=step_config_id)
 
+# %% [markdown]
+# ## Action
+
+# %% [markdown]
+# ### Scale draws
+
 # %%
-config_step.file_seed.parent.mkdir(exist_ok=True, parents=True)
-with open(config_step.file_seed, "w") as fh:
-    fh.write(str(config_step.seed))
+with open(config_step.file_draws) as fh:
+    draws = converter_yaml.loads(fh.read(), nptype.NDArray[np.float64])
+
+# %%
+scaled = draws * config_step.factor
+
+
+# %%
+with open(config_step.file_draws_scaled, "w") as fh:
+    fh.write(converter_yaml.dumps(scaled))
+
+config_step.file_draws_scaled

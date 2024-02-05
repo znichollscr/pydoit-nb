@@ -120,7 +120,7 @@ converter_yaml = cattrs.preconf.pyyaml.make_converter()
 UnstructuredArray: TypeAlias = Union[Sequence[Union[int, float]], Sequence["UnstructuredArray"]]
 
 
-def unstructure_np_array(arr: nptype.NDArray[np.float64]) -> UnstructuredArray:
+def unstructure_np_array(arr: N) -> UnstructuredArray:
     """
     Unstructure :obj:`npt.ArrayLike`
 
