@@ -9,8 +9,6 @@ https://myst-parser.readthedocs.io/en/latest/syntax/organising_content.html#inse
 
 Library to support combining jupyter notebooks and pydoit.
 
-
-
 [![CI](https://github.com/climate-resource/pydoit-nb/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/climate-resource/pydoit-nb/actions/workflows/ci.yaml)
 [![Coverage](https://codecov.io/gh/climate-resource/pydoit-nb/branch/main/graph/badge.svg)](https://codecov.io/gh/climate-resource/pydoit-nb)
 [![Docs](https://readthedocs.org/projects/pydoit-nb/badge/?version=latest)](https://pydoit-nb.readthedocs.io)
@@ -21,10 +19,9 @@ Library to support combining jupyter notebooks and pydoit.
 [![PyPI install](https://github.com/climate-resource/pydoit-nb/actions/workflows/install.yaml/badge.svg?branch=main)](https://github.com/climate-resource/pydoit-nb/actions/workflows/install.yaml)
 
 **Other info :**
-[![License](https://img.shields.io/github/license/climate-resource/pydoit-nb.svg)](https://github.com/climate-resource/pydoit-nb/blob/main/LICENSE)
+[![Licence](https://img.shields.io/github/license/climate-resource/pydoit-nb.svg)](https://github.com/climate-resource/pydoit-nb/blob/main/LICENCE)
 [![Last Commit](https://img.shields.io/github/last-commit/climate-resource/pydoit-nb.svg)](https://github.com/climate-resource/pydoit-nb/commits/main)
 [![Contributors](https://img.shields.io/github/contributors/climate-resource/pydoit-nb.svg)](https://github.com/climate-resource/pydoit-nb/graphs/contributors)
-
 
 <!--- sec-end-description -->
 
@@ -77,6 +74,6 @@ through. If not, please raise an issue in the [issue tracker][issue_tracker].
 
 For the rest of our developer docs, please see [](development-reference).
 
-[issue_tracker]: https://github.com/climate-resource/pydoit-nb/issues
-
 <!--- sec-end-installation-dev -->
+
+[issue_tracker]: https://github.com/climate-resource/pydoit-nb/issues
