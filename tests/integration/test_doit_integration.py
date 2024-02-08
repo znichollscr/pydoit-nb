@@ -109,7 +109,7 @@ def test_task_display(example_project_dir, tmp_path_factory, file_regression):
     # This may require actually parsing the stdout.
 
     # Use a regression test to help us keep track of what stdout produces
-    file_regression.check(res_stdout)
+    file_regression.check(res_stdout.strip())
 
 
 @pytest.mark.slow
