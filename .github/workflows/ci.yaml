@@ -101,6 +101,7 @@ jobs:
       - name: Check build
         run: |
           tar -tvf dist/pydoit_nb-*.tar.gz --wildcards '*pydoit_nb/py.typed'
+          tar -tvf dist/pydoit_nb-*.tar.gz --wildcards 'pydoit_nb-*/LICENCE'
 
   check-dependency-licences:
     runs-on: ubuntu-latest
