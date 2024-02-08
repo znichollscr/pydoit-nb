@@ -5,7 +5,7 @@ description = "Library to support combining jupyter notebooks and pydoit."
 authors = ["Zebedee Nicholls <zebedee.nicholls@climate-resource.com>"]
 readme = "README.md"
 packages = [{include = "pydoit_nb", from = "src"}]
-license = "BSD-3-Clause"
+license = "BSD-3-Clause"  # not spelt licence, silly US english
 
 [tool.poetry.dependencies]
 python = "^3.9"
