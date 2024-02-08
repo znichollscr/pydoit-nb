@@ -19,6 +19,14 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## pydoit-nb v0.3.2 (2024-02-08)
+
+
+### Bug Fixes
+
+- Refer to correct licence file and include licence in pyproject.toml ([#5](https://github.com/climate-resource/pydoit-nb/pulls/5))
+
+
 ## pydoit-nb v0.3.1 (2024-02-08)
 
 
