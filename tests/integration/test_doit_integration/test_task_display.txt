@@ -17,4 +17,4 @@ R copy_source_into_output:copy raw config       Copy required source files into 
 R copy_source_into_output:copy raw notebooks    Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../notebooks',)
 R copy_source_into_output:copy source           Copy required source files into the output directory, making it easy to create a neat bundle for uploading to Zenodo. Copying in ('.../src',)
 R generate_workflow_tasks                       Generate tasks for the workflow
-R generate_workflow_tasks:Show configuration    
+R generate_workflow_tasks:Show configuration
