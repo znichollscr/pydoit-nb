@@ -1,12 +1,14 @@
 """
 Test config_handling
 """
+
 from __future__ import annotations
 
 import re
 from functools import partial
 from pathlib import Path
 
+import pint
 import pytest
 from attrs import define
 
@@ -17,6 +19,8 @@ from pydoit_nb.config_handling import (
     update_attr_value,
 )
 from pydoit_nb.serialization import converter_yaml, load_config_from_file
+
+Q = pint.get_application_registry().Quantity
 
 
 @define
@@ -48,6 +52,7 @@ class ConfigA:
 @define
 class ConfigB:
     step_c: list[StepConfigC]
+    pint_value: pint.UnitRegistry.Quantity
 
 
 @define
@@ -159,7 +164,8 @@ def test_get_config_for_step_id_attribute_error():
                         output=Path("location") / "somewhere" / "else.txt",
                         config={"a": "b"},
                     ),
-                ]
+                ],
+                Q(1, "kg"),
             ),
             ConfigB(
                 [
@@ -175,7 +181,8 @@ def test_get_config_for_step_id_attribute_error():
                         output=Path("/some/prefix") / Path("location") / "somewhere" / "else.txt",
                         config={"a": "b"},
                     ),
-                ]
+                ],
+                Q(1, "kg"),
             ),
             Path("/some/prefix"),
             id="nested_attrs_object",
@@ -221,7 +228,8 @@ def test_load_hydrate_write_config_bundle(tmp_path):
                 output=Path("to") / "somewhere.txt",
                 config={"something": "here"},
             )
-        ]
+        ],
+        pint_value=Q(32, "K"),
     )
 
     with open(configuration_file, "w") as fh:
