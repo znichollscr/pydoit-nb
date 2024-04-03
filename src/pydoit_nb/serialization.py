@@ -29,9 +29,12 @@ this though, which makes us a bit nervous about how hard it could be to do in
 the general case, although specific use cases should be far more tractable and
 easy to test). If you'd like to discuss this more, please raise an issue.
 """
+
 from __future__ import annotations
 
+import warnings
 from collections.abc import Sequence
+from fractions import Fraction
 from pathlib import Path
 from typing import Any, TypeVar, Union, cast
 
@@ -268,6 +271,16 @@ if HAS_PINT:
         """
         # pint not playing nice with mypy
         ur = pint.get_application_registry()  # type: ignore
+
+        if isinstance(inp[0], str):
+            msg = (
+                f"Received {inp[0]=}. "
+                "We are assuming that this is meant to be interpreted as a float. "
+                "It would be safer to put a decimal value into your config, "
+                "or make a merge request to pydoit-nb to make this handling safer."
+            )
+            warnings.warn(msg)
+            inp[0] = float(Fraction(inp[0].replace(" ", "")))
 
         # Can't do dtype control until pint allows it again with e.g.
         # pint.Quantity[np.array[np.float64]]
