@@ -246,7 +246,7 @@ if HAS_PINT:
         if _is_np_scalar(type(inp.magnitude)):
             return (unstructure_np_scalar(inp.magnitude), str(inp.units))
 
-        if isinstance(inp.magnitude, float):
+        if isinstance(inp.magnitude, (float, int)):
             return (inp.magnitude, str(inp.units))
 
         return (unstructure_np_array(inp.magnitude), str(inp.units))
