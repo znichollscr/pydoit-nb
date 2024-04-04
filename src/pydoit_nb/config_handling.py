@@ -1,6 +1,7 @@
 """
 Tools for working with configuration
 """
+
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -13,6 +14,13 @@ from attrs import AttrsInstance, evolve, fields
 
 from pydoit_nb.serialization import write_config_in_config_bundle_to_disk
 from pydoit_nb.typing import ConfigBundleCreator, ConfigBundleLike, Converter, NotebookConfigLike
+
+try:
+    import pint
+
+    HAS_PINT = True
+except ImportError:  # pragma: no cover
+    HAS_PINT = False
 
 T = TypeVar("T")
 
@@ -48,13 +56,40 @@ def insert_path_prefix(config: AI, prefix: Path) -> AI:
                 update_attr_value(k, prefix): update_attr_value(v, prefix) for k, v in attr_value.items()
             }
 
-        elif not isinstance(attr_value, (str, np.ndarray)) and isinstance(attr_value, Iterable):
+        elif isinstance(attr_value, Iterable) and iterable_values_are_updatable(attr_value):
             evolutions[attr_name] = [update_attr_value(v, prefix) for v in attr_value]
 
         else:
             evolutions[attr_name] = update_attr_value(attr_value, prefix)
 
     return evolve(config, **evolutions)  # type: ignore # no idea why this fails
+
+
+# TODO: test this by testing that a value
+# which has a pint quantity as an attribute
+# doesn't cause insert_path_prefix to explode.
+def iterable_values_are_updatable(value: Iterable[Any]) -> bool:
+    """
+    Determine whether an iterable's values are updatable by :func:`insert_path_prefix`.
+
+    Parameters
+    ----------
+    value
+        Value to check.
+
+    Returns
+    -------
+        ``True`` if ``value``'s elements can be updated by :func:`update_attr_value`,
+        ``False`` otherwise.
+    """
+    to_check = [str, np.ndarray]
+    if HAS_PINT:
+        to_check.append(pint.UnitRegistry.Quantity)
+
+    if isinstance(value, tuple(to_check)):
+        return False
+
+    return True
 
 
 @overload

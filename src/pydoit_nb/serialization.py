@@ -29,8 +29,10 @@ this though, which makes us a bit nervous about how hard it could be to do in
 the general case, although specific use cases should be far more tractable and
 easy to test). If you'd like to discuss this more, please raise an issue.
 """
+
 from __future__ import annotations
 
+import warnings
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, TypeVar, Union, cast
@@ -243,7 +245,7 @@ if HAS_PINT:
         if _is_np_scalar(type(inp.magnitude)):
             return (unstructure_np_scalar(inp.magnitude), str(inp.units))
 
-        if isinstance(inp.magnitude, float):
+        if isinstance(inp.magnitude, (float, int)):
             return (inp.magnitude, str(inp.units))
 
         return (unstructure_np_array(inp.magnitude), str(inp.units))
@@ -257,7 +259,9 @@ if HAS_PINT:
         Parameters
         ----------
         inp
-            Unstructured data
+            Unstructured data. If this is a string containing a slash,
+            we try and convert it to a fraction but this isn't super safe
+            so we also raise a warning.
 
         target_type
             Type to create
@@ -268,6 +272,18 @@ if HAS_PINT:
         """
         # pint not playing nice with mypy
         ur = pint.get_application_registry()  # type: ignore
+
+        if isinstance(inp[0], str) and "/" in inp[0]:
+            msg = (
+                f"Received {inp[0]=}. "
+                "We are assuming that this is meant to be interpreted as a float64. "
+                "It would be safer to put a decimal value into your config, "
+                "or make a merge request to pydoit-nb to make this handling safer."
+            )
+            warnings.warn(msg)
+            toks = inp[0].split("/")
+            mag = np.float64(toks[0]) / float(toks[1])
+            return ur.Quantity(mag, inp[1])  # type: ignore
 
         # Can't do dtype control until pint allows it again with e.g.
         # pint.Quantity[np.array[np.float64]]

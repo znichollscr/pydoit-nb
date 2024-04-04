@@ -13,6 +13,12 @@ insert\_path\_prefix
 .. autofunction:: insert_path_prefix
 
 
+iterable\_values\_are\_updatable
+================================
+
+.. autofunction:: iterable_values_are_updatable
+
+
 update\_attr\_value
 ===================
 

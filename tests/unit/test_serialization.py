@@ -1,6 +1,7 @@
 """
 Test the serialization module
 """
+
 from pathlib import Path
 
 import numpy as np
@@ -158,33 +159,72 @@ def test_write_load_config(tmp_path):
         # names and dtypes, multi-dimensional, multi-index etc.
     ),
 )
-def test_structure_non_primatives(inp, exp, restructure_type):
+def test_roundtrip_non_primatives(inp, exp, restructure_type):
     res = converter_yaml.dumps(inp)
     assert res == exp
 
     roundtrip = converter_yaml.loads(res, restructure_type)
-    assert_roundtrip_success(roundtrip, inp)
+    assert_serialisation_success(roundtrip, inp)
 
 
-def assert_roundtrip_success(roundtrip_res, inp):
-    if isinstance(inp, dict):
-        for k, value in inp.items():
-            assert_roundtrip_success(roundtrip_res[k], value)
+@pytest.mark.parametrize(
+    "inp, exp, restructure_type",
+    (
+        pytest.param(
+            "key:\n- 30.333\n- kilogram\n",
+            {"key": UR.Quantity(np.float64(30.333), "kg")},
+            dict[str, UR.Quantity],
+            id="pint_float64_scalar",
+        ),
+        pytest.param(
+            "key:\n- 30 / 400\n- kilogram\n",
+            {"key": UR.Quantity(np.float64(30 / 400), "kg")},
+            dict[str, UR.Quantity],
+            id="pint_float64_scalar_with_value_provided_as_fraction",
+        ),
+    ),
+)
+def test_structure_non_primatives(inp, exp, restructure_type):
+    res = converter_yaml.loads(inp, restructure_type)
+
+    assert_serialisation_success(res, exp)
+
+
+def assert_serialisation_success(res, exp):
+    """
+    Assert that serialisation was a success
+
+    Parameters
+    ----------
+    res
+        The result
+
+    inp
+        The expected result
+
+    Raises
+    ------
+    AssertionError
+        The serialisation was not a sucess
+    """
+    if isinstance(exp, dict):
+        for k, value in exp.items():
+            assert_serialisation_success(res[k], value)
 
         return
 
-    if isinstance(inp, np.ndarray):
-        nptesting.assert_equal(inp, roundtrip_res)
-        assert inp.dtype == roundtrip_res.dtype
+    if isinstance(exp, np.ndarray):
+        nptesting.assert_equal(exp, res)
+        assert exp.dtype == res.dtype
         return
 
-    if isinstance(inp, pint.UnitRegistry.Quantity):
-        pinttesting.assert_equal(inp, roundtrip_res)
-        if hasattr(inp.m, "dtype"):
-            assert inp.m.dtype == roundtrip_res.m.dtype
+    if isinstance(exp, pint.UnitRegistry.Quantity):
+        pinttesting.assert_equal(exp, res)
+        if hasattr(exp.m, "dtype"):
+            assert exp.m.dtype == res.m.dtype
         else:
-            isinstance(inp.m, roundtrip_res.m)
+            isinstance(exp.m, res.m)
 
         return
 
-    assert roundtrip_res == inp
+    assert res == exp
