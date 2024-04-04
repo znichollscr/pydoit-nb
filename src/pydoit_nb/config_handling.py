@@ -79,7 +79,7 @@ def iterable_values_are_updatable(value: Iterable[Any]) -> bool:
 
     Returns
     -------
-        ``True`` if ``value``'s elements can be updated by :func:``update_attr_value`,
+        ``True`` if ``value``'s elements can be updated by :func:`update_attr_value`,
         ``False`` otherwise.
     """
     to_check = [str, np.ndarray]

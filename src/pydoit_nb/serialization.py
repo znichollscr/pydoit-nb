@@ -259,7 +259,9 @@ if HAS_PINT:
         Parameters
         ----------
         inp
-            Unstructured data
+            Unstructured data. If this is a string containing a slash,
+            we try and convert it to a fraction but this isn't super safe
+            so we also raise a warning.
 
         target_type
             Type to create
@@ -271,7 +273,7 @@ if HAS_PINT:
         # pint not playing nice with mypy
         ur = pint.get_application_registry()  # type: ignore
 
-        if isinstance(inp[0], str):
+        if isinstance(inp[0], str) and "/" in inp[0]:
             msg = (
                 f"Received {inp[0]=}. "
                 "We are assuming that this is meant to be interpreted as a float64. "
