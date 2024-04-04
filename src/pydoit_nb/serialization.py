@@ -34,7 +34,6 @@ from __future__ import annotations
 
 import warnings
 from collections.abc import Sequence
-from fractions import Fraction
 from pathlib import Path
 from typing import Any, TypeVar, Union, cast
 
@@ -275,12 +274,14 @@ if HAS_PINT:
         if isinstance(inp[0], str):
             msg = (
                 f"Received {inp[0]=}. "
-                "We are assuming that this is meant to be interpreted as a float. "
+                "We are assuming that this is meant to be interpreted as a float64. "
                 "It would be safer to put a decimal value into your config, "
                 "or make a merge request to pydoit-nb to make this handling safer."
             )
             warnings.warn(msg)
-            inp[0] = float(Fraction(inp[0].replace(" ", "")))
+            toks = inp[0].split("/")
+            mag = np.float64(toks[0]) / float(toks[1])
+            return ur.Quantity(mag, inp[1])  # type: ignore
 
         # Can't do dtype control until pint allows it again with e.g.
         # pint.Quantity[np.array[np.float64]]
