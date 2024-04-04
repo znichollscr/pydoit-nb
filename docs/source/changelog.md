@@ -19,6 +19,17 @@ of rst and use slightly different categories.
 
 <!-- towncrier release notes start -->
 
+## pydoit-nb v0.3.4 (2024-04-04)
+
+
+### Bug Fixes
+
+- Fixed handling of serialisation of Pint quantities.
+
+  Previously, they were mistakenly being identified as iterable,
+  which was causing things to explode. ([#9](https://github.com/climate-resource/pydoit-nb/pulls/9))
+
+
 ## pydoit-nb v0.3.3 (2024-02-15)
 
 
